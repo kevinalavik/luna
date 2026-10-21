@@ -32,6 +32,6 @@ void kmain(void) {
     struct limine_framebuffer* framebuffer = framebuffer_request.response->framebuffers[0];
     console_t* kcon = kcon_init(framebuffer);
     console_set_current(kcon);
-    printf("Luna kernel v0.0.1\n");
+    printf("Luna kernel v0.1.0\n");
     halt();
 }
