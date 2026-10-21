@@ -8,7 +8,8 @@ unset CDPATH
 GIT_DIR= GIT_WORK_TREE= GIT_COMMON_DIR= GIT_INDEX_FILE= GIT_OBJECT_DIRECTORY=
 unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY
 
-srcdir="$(dirname "$0")"
+srcdir="$(dirname "$0")"/third_party
+mkdir -p $srcdir
 test -z "$srcdir" && srcdir=.
 
 cd "$srcdir"
@@ -51,6 +52,16 @@ clone_repo_commit \
     https://github.com/Limine-Bootloader/limine-protocol.git \
     limine-protocol \
     3a0526b700e356f0eac1b71a77697b3fd1c707a3
+
+clone_repo_commit \
+    https://github.com/Mintsuki/Flanterm \
+    flanterm \
+    e231edd0e508022521c8233392aabc8ce5c9b242
+
+clone_repo_commit \
+    https://github.com/charlesnicholson/nanoprintf.git \
+    nanoprintf \
+    bebaecbeaf430e36a2d30d31a2fed4e098388c93
 
 touch .deps-obtained
 

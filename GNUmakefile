@@ -16,7 +16,7 @@ override SGDISK_MBR_FLAGS := -m 1
 override QEMU_UEFI_FLAGS := \
     -drive if=pflash,unit=0,format=raw,file=edk2-ovmf-bins/ovmf-code-$(ARCH).fd,readonly=on
 
-override IMAGE_NAME := template-$(ARCH)
+override IMAGE_NAME := luna-$(ARCH)
 
 HDD_SIZE := 64
 

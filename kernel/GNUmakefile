@@ -35,7 +35,7 @@ NASMFLAGS := -g
 LDFLAGS :=
 
 ifneq ($(filter-out clean distclean,$(or $(MAKECMDGOALS),default)),)
-    ifeq ($(wildcard .deps-obtained),)
+    ifeq ($(wildcard third_party/.deps-obtained),)
         $(error Please run the ./get-deps script first)
     endif
 endif
@@ -78,8 +78,10 @@ override CPPFLAGS := \
     -nostdinc \
     -I include \
     -I arch/$(ARCH)/include \
-    -I limine-protocol/include \
-    -isystem freestanding-c-hdrs/include \
+    -I third_party/limine-protocol/include \
+    -I third_party/flanterm/src \
+    -I third_party/nanoprintf \
+    -isystem third_party/freestanding-c-hdrs/include \
     $(CPPFLAGS) \
     -MMD \
     -MP
@@ -169,7 +171,9 @@ ifeq ($(call LD_HAS_FLAG,-no-pie),1)
         -Wl,-no-pie
 endif
 
-override SRCFILES := $(shell find -L boot lib sys cc-runtime/src -type f 2>/dev/null | LC_ALL=C sort)
+SRC := lib sys dev
+
+override SRCFILES := $(shell find -L $(SRC) third_party/cc-runtime/src third_party/flanterm/src -type f 2>/dev/null | LC_ALL=C sort)
 override SRCFILES += $(shell find -L arch/$(ARCH) -type f \( -name '*.c' -o -name '*.S' -o -name '*.asm' \) 2>/dev/null | LC_ALL=C sort)
 override CFILES := $(filter %.c,$(SRCFILES))
 override ASFILES := $(filter %.S,$(SRCFILES))

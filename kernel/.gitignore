@@ -1,8 +1,6 @@
 /compile_commands.json
 /.cache
 /.deps-obtained
-/freestanding-c-hdrs
-/cc-runtime
-/limine-protocol
+/third_party
 /bin-*
 /obj-*
