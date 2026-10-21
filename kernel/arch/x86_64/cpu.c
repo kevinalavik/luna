@@ -5,3 +5,7 @@ __attribute__((noreturn)) void halt(void) {
         asm("hlt");
     }
 }
+
+void pause(void) {
+    __asm__ volatile("pause");
+}

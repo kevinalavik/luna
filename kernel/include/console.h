@@ -2,11 +2,13 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <lock.h>
 
 typedef struct console {
     void* private;
     int (*write)(struct console* self, const uint8_t* buf, size_t len);
     int (*read)(struct console* self, const uint8_t* buf, size_t len);
+    spinlock_t lock;
 } console_t;
 
 int console_write(console_t* console, const uint8_t* buf, size_t len);

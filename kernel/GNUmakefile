@@ -81,7 +81,7 @@ override CPPFLAGS := \
     -I third_party/limine-protocol/include \
     -I third_party/flanterm/src \
     -I third_party/nanoprintf \
-    -isystem third_party/freestanding-c-hdrs/include \
+    -isystem third_party/freestanding-c-hdrs-gnu/$(ARCH)/include \
     $(CPPFLAGS) \
     -MMD \
     -MP
@@ -224,7 +224,7 @@ clean:
 
 .PHONY: distclean
 distclean:
-	rm -rf bin-* obj-* .deps-obtained .cache compile_commands.json freestanding-c-hdrs cc-runtime limine-protocol
+	rm -rf bin-* obj-* .cache compile_commands.json third_party
 
 .PHONY: install
 install: all

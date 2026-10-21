@@ -39,5 +39,6 @@ console_t* kcon_init(struct limine_framebuffer* fb) {
                                                        0);
     kcon.private = ft_ctx;
     kcon.write = kcon_write;
+    spinlock_init(&kcon.lock);
     return &kcon;
 }

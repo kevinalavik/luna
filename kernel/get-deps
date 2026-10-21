@@ -39,9 +39,9 @@ clone_repo_commit() {
 rm -f .deps-obtained
 
 clone_repo_commit \
-    https://github.com/osdev0/freestanding-c-hdrs.git \
-    freestanding-c-hdrs \
-    38fed4e1e3365733ddbfa03b0a28936243ad31e9
+    https://github.com/osdev0/freestanding-c-hdrs-gnu.git \
+    freestanding-c-hdrs-gnu \
+    cdd9b3cc11808d3259c082a77c33dfeb0f040adc
 
 clone_repo_commit \
     https://github.com/osdev0/cc-runtime.git \
