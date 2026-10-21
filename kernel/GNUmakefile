@@ -27,11 +27,8 @@ ifeq ($(TOOLCHAIN),llvm)
 endif
 
 CFLAGS := -g -O2 -pipe
-
 CPPFLAGS :=
-
 NASMFLAGS := -g
-
 LDFLAGS :=
 
 ifneq ($(filter-out clean distclean,$(or $(MAKECMDGOALS),default)),)

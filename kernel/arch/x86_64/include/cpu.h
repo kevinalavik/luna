@@ -2,3 +2,5 @@
 
 __attribute__((noreturn)) void halt(void);
 void pause(void);
+
+void init_interrupts();
