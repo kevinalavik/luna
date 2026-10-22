@@ -38,9 +38,6 @@ void kmain(void) {
         halt();
     }
     printf("boot: ealloc ok (allocated single page: %p)\n", a);
-    for (;;) {
-        printf("ealloc: %p (1 page)\n", early_alloc(1));
-    }
 
     halt();
 }
