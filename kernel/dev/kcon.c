@@ -2,11 +2,19 @@
 #include <flanterm.h>
 #include <flanterm_backends/fb.h>
 
-console_t kcon = {0};
+#if ARCH == x86_64
+#include <debugcon.h> // route to debugcon aswell on x86_64
+static console_t* debugcon = NULL;
+#endif
+
+static console_t kcon = {0};
 
 int kcon_write(console_t* self, const uint8_t* buf, size_t len) {
     flanterm_write((struct flanterm_context*)self->private, (const char*)buf, len);
-    return len; // this is wack, we just hope that flanterm printed everything :^)
+#if ARCH == x86_64
+    console_write(debugcon, buf, len);
+#endif
+    return (int)len; // this is wack, we just hope that flanterm printed everything :^)
 }
 
 console_t* kcon_init(struct limine_framebuffer* fb) {
@@ -40,5 +48,8 @@ console_t* kcon_init(struct limine_framebuffer* fb) {
     kcon.private = ft_ctx;
     kcon.write = kcon_write;
     spinlock_init(&kcon.lock);
+#if ARCH == x86_64
+    debugcon = debugcon_init(0xe9);
+#endif
     return &kcon;
 }

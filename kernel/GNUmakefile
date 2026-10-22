@@ -168,7 +168,7 @@ ifeq ($(call LD_HAS_FLAG,-no-pie),1)
         -Wl,-no-pie
 endif
 
-SRC := lib sys dev
+SRC := lib sys dev mm
 
 override SRCFILES := $(shell find -L $(SRC) third_party/cc-runtime/src third_party/flanterm/src -type f 2>/dev/null | LC_ALL=C sort)
 override SRCFILES += $(shell find -L arch/$(ARCH) -type f \( -name '*.c' -o -name '*.S' -o -name '*.asm' \) 2>/dev/null | LC_ALL=C sort)

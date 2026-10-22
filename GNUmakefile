@@ -7,7 +7,7 @@ ifneq ($(ARCH),x86_64)
     $(error Only the x86_64 kernel port is currently available)
 endif
 
-QEMUFLAGS := -m 2G
+QEMUFLAGS := -m 2G -debugcon stdio
 
 override QEMU_MACHINE_FLAGS := -M q35
 override LIMINE_EFI := BOOTX64.EFI BOOTIA32.EFI
