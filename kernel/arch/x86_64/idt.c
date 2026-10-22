@@ -1,4 +1,5 @@
 #include <idt.h>
+#include <printf.h>
 
 __attribute__((aligned(0x10))) static idt_entry_t idt[256];
 static idtr_t idtr;
@@ -24,4 +25,5 @@ void idt_init() {
     }
 
     __asm__ volatile("lidt %0" : : "m"(idtr));
+    printf("idt: Loaded IDT, base=0x%.16llx, limit=0x%.4x\n", idtr.base, idtr.limit);
 }

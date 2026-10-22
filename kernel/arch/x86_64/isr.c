@@ -1,4 +1,5 @@
 #include <cpu.h>
+#include <asm.h>
 #include <printf.h>
 #include <isr.h>
 
@@ -41,6 +42,7 @@ __attribute__((noreturn)) void exception_handler(isr_frame_t* frame) {
     printf("\033[91m");
     printf("== Kernel Panic ========\n");
     printf("Location: 0x%.16llx\n", frame->rip);
+    printf("CPU: %d\n", current_cpu()->id);
     printf(
         "Reason: %s (%d) (err=0x%x)\n", exception_names[frame->vector], frame->vector, frame->err);
     printf("\n");

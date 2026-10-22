@@ -1,4 +1,7 @@
+#include <arch.h>
+#include <asm.h>
 #include <cpu.h>
+#include <smp.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -29,7 +32,8 @@ void kmain(void) {
     console_t* kcon = kcon_init();
     console_set_current(kcon);
     printf("boot: Luna kernel \033[95m<3\033[0m v0.1.0\n");
-    init_interrupts();
+    cpu_early_init();
+    interrupt_init();
 
     ealloc_init();
     void* a = early_alloc(1); // waste a single page for testing :^)
@@ -38,6 +42,7 @@ void kmain(void) {
         halt();
     }
     printf("boot: ealloc ok (allocated single page: %p)\n", a);
-
+    mp_init();
+    printf("boot: mp ok\n");
     halt();
 }

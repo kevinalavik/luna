@@ -13,4 +13,6 @@ typedef struct gdtr {
     uint64_t base;
 } __attribute__((packed)) gdtr_t;
 
-void load_gdt(uint64_t* gdt, int entries);
+extern const uint64_t gdt_template[7];
+
+void gdt_load(uint64_t* gdt, int entries);

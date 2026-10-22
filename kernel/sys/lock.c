@@ -1,5 +1,5 @@
 #include <lock.h>
-#include <cpu.h>
+#include <asm.h>
 
 void spinlock_init(spinlock_t* lock) {
     if (!lock)

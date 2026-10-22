@@ -1,11 +1,12 @@
 #include <ealloc.h>
 #include <limine.h>
 #include <printf.h>
-#include <cpu.h>
+#include <asm.h>
 #include <mem.h>
 #include <align.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <lock.h>
 
 __attribute__((used, section(".limine_requests"))) static volatile struct limine_memmap_request
     memmap_request = {.id = LIMINE_MEMMAP_REQUEST_ID, .revision = 0};
@@ -17,6 +18,7 @@ __attribute__((
 static uintptr_t base;
 static uintptr_t max;
 static uintptr_t hhdm_offset;
+static spinlock_t lock = {0};
 
 void ealloc_init() {
     if (!memmap_request.response) {
@@ -62,16 +64,21 @@ void ealloc_init() {
 }
 
 void* early_alloc(size_t bytes /* rounded to PAGE_SIZE */) {
-    if (bytes == 0)
+    spinlock_acquire(&lock);
+    if (bytes == 0) {
+        spinlock_release(&lock);
         return NULL;
+    }
 
     bytes = ALIGN_UP(bytes, PAGE_SIZE);
     if (bytes > max - base) {
         printf("ealloc: can't allocate that much...\n"); // TODO: try the next fitting region
+        spinlock_release(&lock);
         return NULL;
     }
 
     uintptr_t result = base;
     base += bytes;
+    spinlock_release(&lock);
     return (void*)(result + hhdm_offset);
 }
