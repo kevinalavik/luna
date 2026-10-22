@@ -1,11 +1,15 @@
 #include <kcon.h>
 #include <flanterm.h>
 #include <flanterm_backends/fb.h>
+#include <limine.h>
 
 #if ARCH == x86_64
 #include <debugcon.h> // route to debugcon aswell on x86_64
 static console_t* debugcon = NULL;
 #endif
+
+__attribute__((used, section(".limine_requests"))) static volatile struct limine_framebuffer_request
+    framebuffer_request = {.id = LIMINE_FRAMEBUFFER_REQUEST_ID, .revision = 0};
 
 static console_t kcon = {0};
 
@@ -17,7 +21,10 @@ int kcon_write(console_t* self, const uint8_t* buf, size_t len) {
     return (int)len; // this is wack, we just hope that flanterm printed everything :^)
 }
 
-console_t* kcon_init(struct limine_framebuffer* fb) {
+console_t* kcon_init() {
+    if (!framebuffer_request.response)
+        return NULL;
+    struct limine_framebuffer* fb = framebuffer_request.response->framebuffers[0];
     struct flanterm_context* ft_ctx = flanterm_fb_init(NULL,
                                                        NULL,
                                                        fb->address,

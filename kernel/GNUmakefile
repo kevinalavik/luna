@@ -62,6 +62,7 @@ include $(ARCH_CONF)
 override CFLAGS += \
     -Wall \
     -Wextra \
+    -Werror \
     -std=gnu11 \
     -ffreestanding \
     -fno-common \
