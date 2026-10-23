@@ -1,4 +1,5 @@
 #include <ealloc.h>
+#include <hhdm.h>
 #include <limine.h>
 #include <printf.h>
 #include <asm.h>
@@ -11,13 +12,8 @@
 __attribute__((used, section(".limine_requests"))) static volatile struct limine_memmap_request
     memmap_request = {.id = LIMINE_MEMMAP_REQUEST_ID, .revision = 0};
 
-__attribute__((
-    used, section(".limine_requests"))) static volatile struct limine_hhdm_request hhdm_request = {
-    .id = LIMINE_HHDM_REQUEST_ID, .revision = 0};
-
 static uintptr_t base;
 static uintptr_t max;
-static uintptr_t hhdm_offset;
 static spinlock_t lock = {0};
 
 void ealloc_init() {
@@ -26,11 +22,10 @@ void ealloc_init() {
         halt();
     }
 
-    if (!hhdm_request.response) {
+    if (!hhdm_present()) {
         printf("ealloc: Failed to get HHDM offset!\n");
         halt();
     }
-    hhdm_offset = (uintptr_t)hhdm_request.response->offset;
 
     struct limine_memmap_response* memmap = memmap_request.response;
     uint64_t biggest = 0;
@@ -80,5 +75,5 @@ void* early_alloc(size_t bytes /* rounded to PAGE_SIZE */) {
     uintptr_t result = base;
     base += bytes;
     spinlock_release(&lock);
-    return (void*)(result + hhdm_offset);
+    return phys_to_virt(result);
 }

@@ -41,8 +41,7 @@ void kmain(void) {
         printf("boot: ealloc is broken :(\n");
         halt();
     }
-    printf("boot: ealloc ok (allocated single page: %p)\n", a);
+
     mp_init();
-    printf("boot: mp ok\n");
     halt();
 }
