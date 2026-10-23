@@ -1,6 +1,6 @@
 #include <paging.h>
 #include <stddef.h>
-#include <hhdm.h>
+#include <mem.h>
 #include <align.h>
 #include <printf.h>
 #include <asm.h>
@@ -85,6 +85,8 @@ int map_page(ptable_t* pml4, uint64_t vaddr, uint64_t paddr, uint64_t flags) {
     uint64_t entry;
     uint64_t phys;
 
+    pml4 = phys_to_virt((uint64_t)pml4);
+
     entry = pml4->entries[PML4_INDEX(vaddr)];
     if (!(entry & PTE_PRESENT)) {
         phys = (uint64_t)page_alloc();
@@ -139,6 +141,8 @@ int unmap_page(ptable_t* pml4, uint64_t vaddr) {
     ptable_t* pd;
     ptable_t* pt;
     uint64_t entry;
+
+    pml4 = phys_to_virt((uint64_t)pml4);
 
     entry = pml4->entries[PML4_INDEX(vaddr)];
     if (!(entry & PTE_PRESENT)) {
@@ -210,7 +214,7 @@ void paging_init() {
         uint64_t _e = ALIGN_UP((uint64_t)(vend), PAGE_SIZE);                                       \
         for (; _v < _e; _v += PAGE_SIZE) {                                                         \
             uint64_t _p = _v - kernel_virt + kernel_phys;                                          \
-            map_page((ptable_t*)((uint64_t)kernel_ptable + hhdm_offset), _v, _p, (flags));         \
+            map_page(kernel_ptable, _v, _p, (flags));                                              \
         }                                                                                          \
     } while (0)
 

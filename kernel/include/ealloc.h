@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 typedef struct ealloc_range {
-    uintptr_t base; // physical, page aligned
-    size_t length;  // bytes, page multiple
+    uintptr_t base; // physical, page-aligned region start
+    size_t length;  // bytes consumed, not necessarily page-aligned
 } ealloc_range_t;
 
 void ealloc_init(void);
