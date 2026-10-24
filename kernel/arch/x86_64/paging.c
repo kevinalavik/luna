@@ -7,6 +7,7 @@
 #include <string.h>
 #include <ealloc.h>
 #include <limine.h>
+#include <pmm.h>
 
 ptable_t* kernel_ptable = NULL;
 extern char __limine_requests_start[];
@@ -38,8 +39,11 @@ void* page_alloc() {
     if (ptr)
         return ptr;
 
-    return NULL; // no other allocator we can try right now. TODO: add like `page_alloc(1)` once its
-                 // ready
+    ptr = (void*)page_to_phys(page_alloc(1));
+    if (ptr)
+        return ptr;
+
+    return NULL;
 }
 
 uint64_t ptable_virt_to_phys(ptable_t* pml4, uint64_t vaddr) {

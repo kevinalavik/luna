@@ -13,6 +13,7 @@
 #include <ealloc.h>
 #include <vmemmap.h>
 #include <page.h>
+#include <pmm.h>
 
 __attribute__((used, section(".limine_requests"))) static volatile uint64_t limine_base_revision[] =
     LIMINE_BASE_REVISION(6);
@@ -44,8 +45,9 @@ void kmain(void) {
         halt();
     }
 
-    mp_init();
     vmemmap_init();
+    mp_init();
+    pmm_init();
 
     halt();
 }

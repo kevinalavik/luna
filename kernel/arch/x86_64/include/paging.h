@@ -29,4 +29,5 @@ uint64_t ptable_virt_to_phys(ptable_t* pml4, uint64_t vaddr);
 int map_page(ptable_t* pml4, uint64_t vaddr, uint64_t paddr, uint64_t flags);
 int unmap_page(ptable_t* pml4, uint64_t vaddr);
 void paging_init();
+void ptable_load(ptable_t* pt);
 ptable_t* ptable_create();

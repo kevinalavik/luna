@@ -10,6 +10,7 @@
 #include <arch.h>
 #include <asm.h>
 #include <kcon.h>
+#include <paging.h>
 
 __attribute__((used,
                section(".limine_requests"))) static volatile struct limine_mp_request mp_request = {
@@ -41,6 +42,7 @@ void cpu_early_init(void) {
 }
 
 void cpu_init(struct limine_mp_info* mp_info) {
+    ptable_load(kernel_ptable);
     cpu_t* cpu = (cpu_t*)mp_info->extra_argument;
 
     memcpy(cpu->gdt, gdt_template, sizeof(gdt_template));
